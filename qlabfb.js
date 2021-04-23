@@ -139,7 +139,7 @@ instance.prototype.resetVars = function (doUpdate) {
 
 		Object.keys(cues).forEach(function (cue) {
 			qNum = cues[cue].qNumber.replace(/[^\w\.]/gi,'_');
-			qName = cues[cue].qName;
+			qName = cues[cue].qName.replace(/a°/g, 'å').replace(/a¨/g, 'ä').replace(/o¨/g, 'ö').replace(/A°/g, 'Å').replace(/A¨/g, 'Ä').replace(/O¨/g, 'Ö');
 			if (qNum != '' && qName != '') {
 				delete self.cueColors[qNum];
 				self.setVariable('q_' + qNum + '_name');
@@ -192,6 +192,7 @@ instance.prototype.updateQVars = function (q) {
 	var self = this;
 	var qID = q.uniqueID;
 	var qNum = (q.qNumber).replace(/[^\w\.]/gi,'_');
+	var qName = (q.qName).replace(/a°/g, 'å').replace(/a¨/g, 'ä').replace(/o¨/g, 'ö').replace(/A°/g, 'Å').replace(/A¨/g, 'Ä').replace(/O¨/g, 'Ö');
 	var qColor = q.qColor;
 	var oqNum = '';
 	var oqName = '';
@@ -201,7 +202,7 @@ instance.prototype.updateQVars = function (q) {
 	// unset old variable?
 	if (qID in self.wsCues) {
 		oqNum = self.wsCues[qID].qNumber.replace(/[^\w\.]/gi,'_');
-		oqName = self.wsCues[qID].qName;
+		oqName = self.wsCues[qID].qName.replace(/a°/g, 'å').replace(/a¨/g, 'ä').replace(/o¨/g, 'ö').replace(/A°/g, 'Å').replace(/A¨/g, 'Ä').replace(/O¨/g, 'Ö');
 		oqColor = self.wsCues[qID].qColor;
 		oqOrder = self.wsCues[qID].qOrder;
 		if (oqNum != '' && oqNum != q.qNumber) {
@@ -212,8 +213,8 @@ instance.prototype.updateQVars = function (q) {
 		}
 	}
 	// set new value
-	if (qNum != '' && q.qName != '' && (q.qName != oqName || qColor != oqColor)) {
-		self.setVariable('q_' + qNum + '_name', q.qName);
+	if (qNum != '' && qName != '' && (qName != oqName || qColor != oqColor)) {
+		self.setVariable('q_' + qNum + '_name', qName);
 		self.cueColors[qNum] = q.qColor;
 		self.cueByNum[qNum] = q.uniqueID;
 		self.checkFeedbacks('q_bg');
@@ -444,7 +445,7 @@ instance.prototype.rePulse = function (ws) {
 					// QLab sometimes sends 'reload the whole cue list'
 					// so a cue we were waiting for may have been moved/deleted between checks
 					qNum = cues[k].qNumber.replace(/[^\w\.]/gi,'_');
-					qName = cues[k].qName;
+					qName = cues[k].qName.replace(/a°/g, 'å').replace(/a¨/g, 'ä').replace(/o¨/g, 'ö').replace(/A°/g, 'Å').replace(/A¨/g, 'Ä').replace(/O¨/g, 'Ö');
 					if (qNum != '' && qName != '') {
 						delete self.cueColors[qNum];
 						self.setVariable('q_' + qNum + '_name');
